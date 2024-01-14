@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33801.468
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "kr3", "kr3.vcxproj", "{04FC7643-1614-4709-AD8F-5FE122A1EBC5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{04FC7643-1614-4709-AD8F-5FE122A1EBC5}.Debug|x64.ActiveCfg = Debug|x64
+		{04FC7643-1614-4709-AD8F-5FE122A1EBC5}.Debug|x64.Build.0 = Debug|x64
+		{04FC7643-1614-4709-AD8F-5FE122A1EBC5}.Debug|x86.ActiveCfg = Debug|Win32
+		{04FC7643-1614-4709-AD8F-5FE122A1EBC5}.Debug|x86.Build.0 = Debug|Win32
+		{04FC7643-1614-4709-AD8F-5FE122A1EBC5}.Release|x64.ActiveCfg = Release|x64
+		{04FC7643-1614-4709-AD8F-5FE122A1EBC5}.Release|x64.Build.0 = Release|x64
+		{04FC7643-1614-4709-AD8F-5FE122A1EBC5}.Release|x86.ActiveCfg = Release|Win32
+		{04FC7643-1614-4709-AD8F-5FE122A1EBC5}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A22FB3AE-1072-4EA3-8E3A-1DB3CC8ABFE0}
+	EndGlobalSection
+EndGlobal
