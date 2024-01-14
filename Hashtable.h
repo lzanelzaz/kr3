@@ -252,4 +252,3 @@ void Hashtable<ValueType>::Clear() {
 	}
 	size = 0;
 }
-
