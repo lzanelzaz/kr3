@@ -131,6 +131,7 @@ Hashtable<ValueType>::Hashtable(size_t size) {
 
 template<class ValueType>
 bool Hashtable<ValueType>::Insert(string key, ValueType value) {
+	probes = 0;
 	int pos = -1;
 	size_t i = 0;
 	size_t j;
@@ -145,6 +146,7 @@ bool Hashtable<ValueType>::Insert(string key, ValueType value) {
 		i++;
 	} while (!(i == getCapacity() || data[j].state == State::FREE));
 	if (i == getCapacity() && pos == -1) {
+		probes = i;
 		return false;
 	}
 	if (pos == -1) {
@@ -152,25 +154,31 @@ bool Hashtable<ValueType>::Insert(string key, ValueType value) {
 	}
 	data[pos] = Node(key, value);
 	size++;
-	probes = i-1;
+	probes = i;
 	return true;
 }
 
 template<class ValueType>
 bool Hashtable<ValueType>::Delete(string key) {
+	probes = 0;
 	size_t i = 0;
 	size_t j;
 	do {
 		j = hashcode(key, i);
 		if (data[j].key == key && data[j].state == State::BUSY) {
+			size--;
+			probes = i + 1;
+			if (size == 0) {
+				Clear();
+				return true;
+			}
 			data[j].clear();
 			data[j].state = State::DELETED;
-			size--;
-			probes = i;
 			return true;
 		}
 		i++;
 	} while (!(data[j].state == State::FREE || i == getCapacity()));
+	probes = i;
 	return false;
 }
 
@@ -199,29 +207,37 @@ void Hashtable<ValueType>::Show() {
 
 template<class ValueType>
 ValueType Hashtable<ValueType>::Search(string key) {
+	probes = 0;
 	size_t i = 0;
 	size_t j;
 	do {
 		j = hashcode(key, i);
 		if (data[j].key == key && data[j].state == State::BUSY) {
+			probes = i+1;
 			return data[j].value;
 		}
 		i++;
 	} while (!(data[j].state == State::FREE || i == getCapacity()));
+	probes = i;
 	throw exception("Ключ не существует!");
 }
 
 template<class ValueType>
-size_t Hashtable<ValueType>::hashcode(string s, size_t i) {
-	double hash_result = 0;
+size_t Hashtable<ValueType>::hashcode(string s, size_t probe) {
+	int k = 31, mod = 1e13;
+	unsigned long long m = 1;
+	unsigned long long hash_result = 0;
 	double A = (sqrt(5) - 1) / 2;
-	for (int i = 0; i < s.size(); ++i) { // Правило Горнера + мультипликативный метод хеширования
-		hash_result = (hash_result * pow(2, s.size()) + s[i] - 'А' + 1);
-		hash_result = A * hash_result;
-		hash_result = hash_result - (size_t)hash_result;
+	for (int i = 0; i < s.size(); ++i) {
+		int _s = s[i] - 'А' + 7;
+		hash_result = hash_result * (int)pow(2, s.size());
+		hash_result = (hash_result % mod + m * _s) % mod;
+		m = (m * k) % mod;
 	}
-	hash_result = ((size_t)(getCapacity() * hash_result) + i) % getCapacity();
-	cout << "Сгенерированный индекс: "<< hash_result << endl;
+	double buf = A * hash_result;
+	buf = buf - (size_t)buf;
+	hash_result = ((size_t)(getCapacity() * buf) + probe) % getCapacity();
+	cout << "Сгенерированный индекс: " << hash_result << endl;
 	return hash_result;
 }
 
@@ -236,7 +252,7 @@ size_t Hashtable<ValueType>::getSize() {
 }
 
 template<class ValueType>
-size_t Hashtable<ValueType>::getProbesForPrevOp(){
+size_t Hashtable<ValueType>::getProbesForPrevOp() {
 	return probes;
 }
 
